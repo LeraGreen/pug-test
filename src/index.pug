@@ -1,20 +1,109 @@
 doctype html
+
+include _include/variables.pug
+include mixins/someBemBlock.pug
+include mixins/btn.pug
+
 html(lang="en")
+
   head
-    title pageTitle
-  body
+    meta(charset="UTF-8")
+    meta(name='viewport', content='width=device-width, initial-scale=1.0')
+    title= menu[0]
+    script(type='text/javascript').
+      var foo = true;
+      if (foo) {
+        console.log(1 + 5)
+      }
 
-    +btn
+  body(class=authenticated ? 'authed' : 'anon')
 
-    h1 Jade - node template engine
+    h1= 'Заголовок ' + menu[0]
+
+    p(
+      class="megapar"
+      data-attr="more!"
+      style={'color': 'rgba(255, 40, 80, 0.9)', 'background-color': '#00f'}
+    ).
+      Параграф со множеством атрибутов
+
+    nav.nav
+      ul
+        each menuItem in menu
+          li: a(href="") #{menuItem}
+
+    nav.nav-true
+      ul
+        each menuItem in menuTrue
+          li: #{key} a(href="#{menuItem.url}") #{menuItem.title}
+
+    - var x = 2;
+    div
+      ul
+        - for (var i=1; i<=x; i++) {
+          li= i + ". Hello"
+        - }
+
     #container.col
+
       if youAreUsingJade
         p You are amazing
-        +other-mixin(data)
       else
         p Get on it!
+
+      if !youAreUsingJade
+        p YOU NOT USING PUG???
+
+      ul: li: a(href="#") привет
+
+      input(type="text", placeholder="непарный тег")/
+
       p.
         Jade is a terse and simple
         templating language with a
         strong focus on performance
         and powerful features.
+      p
+        | Jade is a terse and simple
+        | templating language with a
+        | strong focus on performance
+        | and powerful features.
+
+      - var text = "On Dogs Man's Best Friend 111"
+      p= text
+
+
+      //- Такой коммент не попадет в разметку
+      // Строчный коммент, попадет в разметку
+      //
+        Блочный коммент
+        Попадет в разметку
+
+      h2 Сага о пробельных символах
+
+      <p>Text <a href="#">link text</a> <b>bold text</b></p>
+
+      p Text #[a(href="#") link #[span text]] #[b bold text]
+
+      p Text
+        =' '
+        a(href='#') link text
+        =' '
+        b bold text
+
+      h2 Интерполяция
+
+      p= theGreat
+      p!= theGreat
+      p Текст и потом #{theGreat}
+      p Текст и потом !{theGreat}
+
+      h2 Примеси
+
+      +someBemBlock('Какой-то заголовок')
+
+      +someBemBlock('Какой-то другой заголовок')
+        p Некий текст, передаваемый в примесь
+
+      +btn({mod:'success', tag: 'button', href: 'google.com'})(data-attr="google.com").
+        Некий текст в кнопке

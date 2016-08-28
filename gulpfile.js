@@ -5,7 +5,7 @@ const browserSync = require('browser-sync').create();
 const pug = require('gulp-pug');
 
 gulp.task('pug', function() {
-  return gulp.src('src/**/*.pug')
+  return gulp.src('src/*.pug')
     .pipe(pug({
       pretty: true
     }))
